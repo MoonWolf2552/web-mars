@@ -1,16 +1,12 @@
-from flask import Flask, url_for, request
+from flask import Flask, url_for, request, render_template
 
 app = Flask(__name__)
 
 
-@app.route('/')
-def main():
-    return "<h1>Миссия Колонизация Марса</h1>"
-
-
-@app.route('/index')
-def index():
-    return "<h1>И на Марсе будут яблони цвести!</h1>"
+@app.route('/<title>')
+@app.route('/index/<title>')
+def index(title):
+    return render_template('index.html', title=title)
 
 
 @app.route('/promotion')
