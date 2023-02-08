@@ -9,6 +9,11 @@ def index(title):
     return render_template('index.html', title=title)
 
 
+@app.route('/training/<prof>')
+def traning(prof):
+    return render_template('training.html', prof=prof, title="Тренировки в полёте")
+
+
 @app.route('/promotion')
 def promotion():
     a = ["Человечество вырастает из детства.</p>",
