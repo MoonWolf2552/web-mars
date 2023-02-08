@@ -4,14 +4,24 @@ app = Flask(__name__)
 
 
 @app.route('/<title>')
+@app.route('/index')
 @app.route('/index/<title>')
-def index(title):
+def index(title='Миссия на Марс'):
     return render_template('index.html', title=title)
 
 
 @app.route('/training/<prof>')
 def traning(prof):
     return render_template('training.html', prof=prof, title="Тренировки в полёте")
+
+@app.route('/list_prof')
+@app.route('/list_prof/<list>')
+def list_prof(list='ol'):
+    professions = ['инженер-исследователь', 'пилот', 'строитель', 'экзобиолог', 'врач',
+                   'инженер по терраформированию', 'климатолог', 'специалист по радиационной защите',
+                   'астрогеолог', 'гляциолог', 'инженер жизнеобеспечения', 'метеоролог',
+                   'оператор марсохода', 'киберинженер', 'штурман', 'пилот дронов']
+    return render_template('list_prof.html', prof=list, professions=professions, title="Список профессий")
 
 
 @app.route('/promotion')
