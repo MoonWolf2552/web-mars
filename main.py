@@ -1,6 +1,10 @@
-from flask import Flask, url_for, request, render_template
+from flask import Flask, url_for, request, render_template, redirect
+
+from forms.login_form import LoginForm
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 
 @app.route('/<title>')
@@ -40,6 +44,15 @@ def answer():
         'ready': 'True',
     }
     return render_template('auto_answer.html', **param)
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        return redirect('/')
+    return render_template('login.html', title='Авторизация', form=form)
+    return render_template('login.html', **param)
 
 
 @app.route('/promotion')
