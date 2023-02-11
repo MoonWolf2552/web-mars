@@ -14,6 +14,7 @@ def index(title='Миссия на Марс'):
 def traning(prof):
     return render_template('training.html', prof=prof, title="Тренировки в полёте")
 
+
 @app.route('/list_prof')
 @app.route('/list_prof/<list>')
 def list_prof(list='ol'):
@@ -21,7 +22,24 @@ def list_prof(list='ol'):
                    'инженер по терраформированию', 'климатолог', 'специалист по радиационной защите',
                    'астрогеолог', 'гляциолог', 'инженер жизнеобеспечения', 'метеоролог',
                    'оператор марсохода', 'киберинженер', 'штурман', 'пилот дронов']
-    return render_template('list_prof.html', prof=list, professions=professions, title="Список профессий")
+    return render_template('list_prof.html', prof=list, professions=professions,
+                           title="Список профессий")
+
+
+@app.route('/answer')
+@app.route('/auto_answer')
+def answer():
+    param = {
+        'title': 'Автоматический ответ',
+        'surname': 'Twen',
+        'name': 'Mark',
+        'education': 'middle',
+        'profession': 'doctor',
+        'sex': 'male',
+        'motivation': 'popularity',
+        'ready': 'True',
+    }
+    return render_template('auto_answer.html', **param)
 
 
 @app.route('/promotion')
