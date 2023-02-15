@@ -30,6 +30,12 @@ def list_prof(list='ol'):
                            title="Список профессий")
 
 
+@app.route('/distribution')
+def distribution():
+    cosm = ['Ридли Скотт', 'Энди Уир', 'Марк Уотни', 'Венката Капур', 'Тедди Сандерс', 'Шон Бин']
+    return render_template('distribution.html', cosm=cosm, title="По каютам!")
+
+
 @app.route('/answer')
 @app.route('/auto_answer')
 def answer():
@@ -52,7 +58,6 @@ def login():
     if form.validate_on_submit():
         return redirect('/')
     return render_template('login.html', title='Авторизация', form=form)
-    return render_template('login.html', **param)
 
 
 @app.route('/promotion')
