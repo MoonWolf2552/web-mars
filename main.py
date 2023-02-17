@@ -102,7 +102,7 @@ def promotion_image():
                     <html lang="en">
                       <head>
                         <meta charset="utf-8">
-                        <link rel="stylesheet" type="text/css" href="{url_for('static', filename='css/style.css')}" />
+                        <link rel="stylesheet" type="text/css" href="{url_for('static', filename='css/style.css')}" >
                         <link rel="stylesheet"
                         href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
                         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
@@ -123,7 +123,7 @@ def promotion_image():
                     </html>"""
 
 
-@app.route('/carousel')
+@app.route('/carousel', methods=['POST', 'GET'])
 def carousel():
     return f"""<!doctype html>
                         <html lang="en">
@@ -133,6 +133,9 @@ def carousel():
                             href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
                             integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
                             crossorigin="anonymous">
+                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+                            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+                            crossorigin="anonymous"></script>
                             <title>Пейзажи Марса</title>
                           </head>
                           <body>
@@ -141,14 +144,17 @@ def carousel():
                              <div class="carousel-inner">
                                 <div class="carousel-item active">
                                   <img src="static/img/mars1.jpg" class="d-block w-100"
+                                  height = "1000"
                                   alt="здесь должна была быть картинка, но не нашлась">
                                 </div>
                                 <div class="carousel-item">
                                   <img src="static/img/mars2.jpg" class="d-block w-100" 
+                                  height = "1000"
                                   alt="здесь должна была быть картинка, но не нашлась">
                                 </div>
                                 <div class="carousel-item">
                                   <img src="static/img/mars3.jpg" class="d-block w-100"
+                                  height = "1000"
                                   alt="здесь должна была быть картинка, но не нашлась">
                                 </div>
                               </div>
