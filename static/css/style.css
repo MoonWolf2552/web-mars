@@ -1,19 +1,25 @@
 h1 {
-   color: #d22e3a
+    color: #d22e3a
 }
 
 h4 {
-   color: #AAAAAA;
-   padding-left: 20px
+    color: #AAAAAA;
+    padding-left: 20px
 }
 
-h2.avr{
+h2.avr {
     background-image: url('../img/mission_small.png');
     background-repeat: no-repeat;
     background-size: 130px 40px;
     padding-left: 140px
-  }
+}
 
-h2.choo{
+h2.choo {
     padding-left: 40px
+}
+
+img.mem {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

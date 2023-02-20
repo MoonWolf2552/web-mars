@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, url_for, request, render_template, redirect
 
 from forms.login_form import LoginForm
@@ -34,6 +36,13 @@ def list_prof(list='ol'):
 def distribution():
     cosm = ['Ридли Скотт', 'Энди Уир', 'Марк Уотни', 'Венката Капур', 'Тедди Сандерс', 'Шон Бин']
     return render_template('distribution.html', cosm=cosm, title="По каютам!")
+
+
+@app.route('/member')
+def member():
+    with open('templates/members.json', mode='rt', encoding='utf-8') as f:
+        mems = json.load(f)
+    return render_template('member.html', mems=mems, title="По каютам!")
 
 
 @app.route('/answer')
@@ -169,6 +178,31 @@ def carousel():
                             </div>
                           </body>
                         </html>"""
+
+
+@app.route('/load_image')
+def load_image():
+        return f'''<!doctype html>
+                        <html lang="en">
+                          <head>
+                            <meta charset="utf-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                            <link rel="stylesheet"
+                            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+                            integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+                            crossorigin="anonymous">
+                            <title>Отбор астронавтов</title>
+                          </head>
+                          <body>
+                            <h1 align="center">Загрузка фотографии</h1>
+                            <h2 align="center">для участия в миссии</h2>
+                            <div>
+                                <form method="post" action="upload.php" formenctype="multipart/form-data">
+                                    <label for="upload">Upload your picture:</label>
+                                    <input type="file" name="upload" id="upload">
+                                </form>
+                            </div>
+                          </body>'''
 
 
 @app.route('/form_sample', methods=['POST', 'GET'])
