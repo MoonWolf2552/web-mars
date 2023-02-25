@@ -1,7 +1,8 @@
-import json
-
 from flask import Flask, url_for, request, render_template, redirect
 
+from data import db_session
+from data.jobs import Jobs
+from data.users import User
 from forms.login_form import LoginForm
 
 app = Flask(__name__)
@@ -9,11 +10,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 
-@app.route('/<title>')
+@app.route('/')
 @app.route('/index')
-@app.route('/index/<title>')
-def index(title='Миссия на Марс'):
-    return render_template('index.html', title=title)
+def index():
+    session = db_session.create_session()
+    jobs = session.query(Jobs).all()
+    return render_template('index.html', jobs=jobs, title='Журнал работ')
 
 
 @app.route('/training/<prof>')
@@ -30,19 +32,6 @@ def list_prof(list='ol'):
                    'оператор марсохода', 'киберинженер', 'штурман', 'пилот дронов']
     return render_template('list_prof.html', prof=list, professions=professions,
                            title="Список профессий")
-
-
-@app.route('/distribution')
-def distribution():
-    cosm = ['Ридли Скотт', 'Энди Уир', 'Марк Уотни', 'Венката Капур', 'Тедди Сандерс', 'Шон Бин']
-    return render_template('distribution.html', cosm=cosm, title="По каютам!")
-
-
-@app.route('/member')
-def member():
-    with open('templates/members.json', mode='rt', encoding='utf-8') as f:
-        mems = json.load(f)
-    return render_template('member.html', mems=mems, title="По каютам!")
 
 
 @app.route('/answer')
@@ -111,7 +100,7 @@ def promotion_image():
                     <html lang="en">
                       <head>
                         <meta charset="utf-8">
-                        <link rel="stylesheet" type="text/css" href="{url_for('static', filename='css/style.css')}" >
+                        <link rel="stylesheet" type="text/css" href="{url_for('static', filename='css/style.css')}" />
                         <link rel="stylesheet"
                         href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
                         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
@@ -130,79 +119,6 @@ def promotion_image():
                         <div class="alert alert-danger" role="alert">Присоединяйся!</div>
                       </body>
                     </html>"""
-
-
-@app.route('/carousel', methods=['POST', 'GET'])
-def carousel():
-    return f"""<!doctype html>
-                        <html lang="en">
-                          <head>
-                            <meta charset="utf-8">
-                            <link rel="stylesheet"
-                            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-                            integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-                            crossorigin="anonymous">
-                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
-                            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
-                            crossorigin="anonymous"></script>
-                            <title>Пейзажи Марса</title>
-                          </head>
-                          <body>
-                            <h1 align="center">Пейзажи Марса</h1>
-                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="true">
-                             <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                  <img src="static/img/mars1.jpg" class="d-block w-100"
-                                  height = "1000"
-                                  alt="здесь должна была быть картинка, но не нашлась">
-                                </div>
-                                <div class="carousel-item">
-                                  <img src="static/img/mars2.jpg" class="d-block w-100" 
-                                  height = "1000"
-                                  alt="здесь должна была быть картинка, но не нашлась">
-                                </div>
-                                <div class="carousel-item">
-                                  <img src="static/img/mars3.jpg" class="d-block w-100"
-                                  height = "1000"
-                                  alt="здесь должна была быть картинка, но не нашлась">
-                                </div>
-                              </div>
-                              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                              </button>
-                              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                              </button>
-                            </div>
-                          </body>
-                        </html>"""
-
-
-@app.route('/load_image')
-def load_image():
-        return f'''<!doctype html>
-                        <html lang="en">
-                          <head>
-                            <meta charset="utf-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-                            <link rel="stylesheet"
-                            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
-                            integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
-                            crossorigin="anonymous">
-                            <title>Отбор астронавтов</title>
-                          </head>
-                          <body>
-                            <h1 align="center">Загрузка фотографии</h1>
-                            <h2 align="center">для участия в миссии</h2>
-                            <div>
-                                <form method="post" action="upload.php" formenctype="multipart/form-data">
-                                    <label for="upload">Upload your picture:</label>
-                                    <input type="file" name="upload" id="upload">
-                                </form>
-                            </div>
-                          </body>'''
 
 
 @app.route('/form_sample', methods=['POST', 'GET'])
@@ -322,5 +238,71 @@ def form_sample():
         return "<h1>Форма отправлена<h1>"
 
 
+def user_create():
+    session = db_session.create_session()
+
+    user = User(surname='Scott',
+                name='Ridley',
+                age=21,
+                position='captain',
+                speciality='research engineer',
+                address='module_1',
+                email='scott_chief@mars.org')
+    session.add(user)
+    session.commit()
+
+    user = User(surname='Harry',
+                name='Potter',
+                age=14,
+                position='magl',
+                speciality='engineer',
+                address='module_1',
+                email='harry@mars.org')
+    session.add(user)
+
+    user = User(surname='Joe',
+                name='Biden',
+                age=60,
+                position='prezident',
+                speciality='biolog',
+                address='module_2',
+                email='biden@mars.org')
+    session.add(user)
+
+    user = User(surname='Mark',
+                name='Twen',
+                age=45,
+                position='writer',
+                speciality='coocker',
+                address='module_3',
+                email='twen@mars.org')
+    session.add(user)
+
+
+def jobs_create():
+    session = db_session.create_session()
+
+    job = Jobs(team_leader=1,
+               job='deployment of residential modules 1 and 2',
+               work_size=15,
+               collaborators='2, 3',
+               is_finished=False,
+               )
+    session.add(job)
+
+    job = Jobs(team_leader=1,
+               job='cleaning of modules 1 and 2',
+               work_size=20,
+               collaborators='1, 4',
+               is_finished=False,
+               )
+    session.add(job)
+
+    session.commit()
+
+
 if __name__ == '__main__':
+    db_session.global_init("db/blogs.db")
+    # user_create()
+    # jobs_create()
     app.run(port=8080, host='127.0.0.1')
