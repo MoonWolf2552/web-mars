@@ -1,11 +1,13 @@
 import datetime
 import sqlalchemy
+from flask_login import UserMixin
 from sqlalchemy import orm
 from werkzeug.security import generate_password_hash, check_password_hash
+
 from .db_session import SqlAlchemyBase
 
 
-class User(SqlAlchemyBase):
+class User(SqlAlchemyBase, UserMixin):
     __tablename__ = 'users'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
@@ -15,16 +17,16 @@ class User(SqlAlchemyBase):
     age = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     position = sqlalchemy.Column(sqlalchemy.String, nullable=True)  # должность
     speciality = sqlalchemy.Column(sqlalchemy.String, nullable=True)  # профессия
-    address = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    address = sqlalchemy.Column(sqlalchemy.String, nullable=True)  # адрес
     email = sqlalchemy.Column(sqlalchemy.String,
-                              index=True, unique=True, nullable=True)  # элекорнная почта
+                              index=True, unique=True, nullable=True)  # электронная почта
 
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)  # хэшированный пароль
     modified_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                       default=datetime.datetime.now)  # дата изменения
-
     jobs = orm.relationship('Jobs', back_populates='user')
-    department = orm.relationship('Department', back_populates='user')
+
+    departments = orm.relationship("Department", back_populates='user')
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

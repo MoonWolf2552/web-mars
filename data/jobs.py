@@ -25,3 +25,6 @@ class Jobs(SqlAlchemyBase):
     is_finished = sqlalchemy.Column(sqlalchemy.Boolean, default=False)  # признак завершения
 
     user = orm.relationship('User')
+
+    def __repr__(self):
+        return f"""id:{self.id}, job:{self.job}, start_date:{self.start_date}"""

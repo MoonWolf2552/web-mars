@@ -1,56 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    <h2 class="avr">Аварийный доступ</h2>
-
-    <form action="" method="post" novalidate>
+    <h1>Авторизация</h1>
+    <form action="" method="post">
         {{ form.hidden_tag() }}
-
         <p>
-            {{ form.id_ast.label }}<br>
-            {{ form.id_ast(class="form-control") }}<br>
-
-            {% for error in form.id_ast.errors %}
+            {{ form.email.label }}<br>
+            {{ form.email(class="form-control", type="email") }}<br>
+            {% for error in form.email.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
                 </div>
             {% endfor %}
         </p>
-
         <p>
-            {{ form.passwd_ast.label }}<br>
-            {{ form.passwd_ast(class="form-control", type="password") }}<br>
-
-            {% for error in form.passwd_ast.errors %}
+            {{ form.password.label }}<br>
+            {{ form.password(class="form-control", type="password") }}<br>
+            {% for error in form.password.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
                 </div>
             {% endfor %}
         </p>
-
-        <p>
-            {{ form.id_cap.label }}<br>
-            {{ form.id_cap(class="form-control") }}<br>
-
-            {% for error in form.id_cap.errors %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error }}
-                </div>
-            {% endfor %}
-        </p>
-
-        <p>
-            {{ form.passwd_cap.label }}<br>
-            {{ form.passwd_cap(class="form-control", type="password") }}<br>
-
-            {% for error in form.passwd_cap.errors %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error }}
-                </div>
-            {% endfor %}
-        </p>
-
+        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
         <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        <div>{{ message }}</div>
     </form>
 {% endblock %}
