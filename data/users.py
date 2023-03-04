@@ -2,6 +2,7 @@ import datetime
 import sqlalchemy
 from flask_login import UserMixin
 from sqlalchemy import orm
+from sqlalchemy_serializer import SerializerMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from .db_session import SqlAlchemyBase
@@ -18,7 +19,7 @@ class UserPassword():
         return f"""id:{self.id}, name:{self.name}, email:{self.email}"""
 
 
-class User(SqlAlchemyBase, UserPassword, UserMixin):
+class User(SqlAlchemyBase, UserPassword, UserMixin, SerializerMixin):
     __tablename__ = 'users'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
