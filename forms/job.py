@@ -13,3 +13,6 @@ class JobForm(FlaskForm):
     end_date = DateTimeLocalField('Дата окончания', format="%Y-%m-%dT%H:%M", validators=[Optional()])
     is_finished = BooleanField('Окончена')
     submit = SubmitField('Добавить')
+
+class EdJobForm(JobForm):
+        submit = SubmitField('Сохранить')

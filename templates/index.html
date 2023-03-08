@@ -5,6 +5,7 @@
     <h3 align="center">Work logs</h3>
 
     {% for item in jobs %}
+
         <h3>Action #{{ loop.index }}</h3>
         <table class="table table-striped">
             <thead>
@@ -17,6 +18,7 @@
                 </tr>
               </thead>
             <tbody>
+
               <tr class="table-info">
                 <td>{{ item.job }}</td>
                 <td>{{ item.user.name }} {{ item.user.surname }}</td>
@@ -30,10 +32,23 @@
               </tr>
             </tbody>
         </table>
+
+        {% if current_user.is_authenticated and (current_user == item.user or current_user.id == 1) %}
+                <div>
+                    <a href="/jobs/{{ item.id }}" class="btn btn-warning">
+                        Изменить
+                    </a>
+                    <a href="/jobs_delete/{{ item.id }}" class="btn btn-danger">
+                        Удалить
+                    </a>
+                </div>
+        {% endif %}
+
     {% endfor %}
+
     <br>
     {% if current_user.is_authenticated %}
-    <a class="btn btn-primary " href="/addjob">Добавить работу</a>
+        <a class="btn btn-primary " href="/addjob">Добавить работу</a>
     {% endif %}
 
 {% endblock %}
