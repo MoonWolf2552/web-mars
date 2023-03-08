@@ -3,6 +3,9 @@
 {% block content %}
 
     <h3 align="center">Work logs</h3>
+    <br>
+    <a href="/departments" class="btn btn-secondary">Перейти к департаментам</a>
+    <br>
 
     {% for item in jobs %}
 
@@ -48,7 +51,7 @@
 
     <br>
     {% if current_user.is_authenticated %}
-        <a class="btn btn-primary " href="/addjob">Добавить работу</a>
+        <a class="btn btn-primary" href="/addjob">Добавить работу</a>
     {% endif %}
 
 {% endblock %}
