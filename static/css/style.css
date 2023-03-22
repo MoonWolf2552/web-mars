@@ -23,3 +23,7 @@ img.mem {
     margin-left: auto;
     margin-right: auto;
 }
+
+form.img_form {
+  text-align: center;
+}

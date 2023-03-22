@@ -104,11 +104,11 @@ def addjob():
             is_finished=form.is_finished.data
         )
         if form.collaborators.data:
-            job.collaborators=form.collaborators.data
+            job.collaborators = form.collaborators.data
         if form.start_date.data:
-            job.start_date=form.start_date.data
+            job.start_date = form.start_date.data
         if form.end_date.data:
-            job.end_date=form.end_date.data
+            job.end_date = form.end_date.data
         db_sess.add(job)
         db_sess.commit()
         return redirect('/')
@@ -151,7 +151,7 @@ def edit_job(id):
             return redirect('/')
         else:
             abort(404)
-    return render_template('job.html',title='Редактирование работы',form=form)
+    return render_template('job.html', title='Редактирование работы', form=form)
 
 
 @app.route('/jobs_delete/<int:id>', methods=['GET', 'POST'])
@@ -217,7 +217,7 @@ def edit_department(id):
             return redirect('/departments')
         else:
             abort(404)
-    return render_template('department.html',title='Редактирование департамента',form=form)
+    return render_template('department.html', title='Редактирование департамента', form=form)
 
 
 @app.route('/departments_delete/<int:id>', methods=['GET', 'POST'])
@@ -307,6 +307,67 @@ def image_mars():
                         <p>Вот она какая, красная планета.</p>
                       </body>
                     </html>"""
+
+
+@app.route('/load_image', methods=['POST', 'GET'])
+def load_image():
+    if request.method == 'GET':
+        return f"""<!doctype html>
+                                <html lang="en">
+                                  <head>
+                                    <meta charset="utf-8">
+                                    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+                                    <link rel="stylesheet" type="text/css" href="static/css/style.css" />
+                                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+                                    <title>Загрузка фотографии</title>
+                                  </head>
+                                  <body>
+                                    <h1 align="center">Загрузка фотографии</h1>
+                                    <h2 align="center">для участи в миссии</h2>
+                                    <div>
+                                        <form class="img_form" method="post">
+                                            <div class="form-group">
+                                                <label for="photo">Загрузите фотографию</label>
+                                                <input type="image" src="static/img/mars.png" class="form-control-file" id="photo" name="img">
+                                            </div>
+                                            <br>
+                                            <button type="submit" class="btn btn-primary">Отправить</button>
+                                         </form>
+                                    </div>
+                                  </body>
+                                </html>"""
+    if request.method == 'POST':
+        print(request.form['file'])
+        return f"""<!doctype html>
+                        <html lang="en">
+                          <head>
+                            <meta charset="utf-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+                            <link rel="stylesheet" type="text/css" href="static/css/style.css" />
+                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+                            <title>Загрузка фотографии</title>
+                          </head>
+                          <body>
+                            <h1 align="center">Загрузка фотографии</h1>
+                            <h2 align="center">для участи в миссии</h2>
+                            <div>
+                                <form class="img_form" method="post">
+                                    <div class="form-group">
+                                        <label for="photo">Загрузите фотографию</label>
+                                        <input type="image" class="form-control-file" id="photo" name="img">
+                                    </div>
+                                    <br>
+                                    <img src="{url_for('static', 'img/' + request.form["img"])}" 
+                                    width="300" height="300" 
+                                    alt="здесь должна была быть картинка, но не нашлась">
+                                    <br>
+                                    <button type="submit" class="btn btn-primary">Отправить</button>
+                                 </form>
+                            </div>
+                          </body>
+                        </html>"""
 
 
 @app.route('/promotion_image')
