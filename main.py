@@ -309,15 +309,16 @@ def image_mars():
                     </html>"""
 
 
-# @app.route('galery', methods=['POST', 'GET'])
-# def galery():
-#     photoes = ['static/img/mars1.jpg',
-#                'static/img/mars2.jpg',
-#                'static/img/mars3.jpg']
-#     if request.method == 'GET':
-#         return render_template('auto_answer.html', title='Галерея', photoes=photoes)
-#     if request.method == 'POST':
-#         pass
+@app.route('/galery', methods=['POST', 'GET'])
+def galery():
+    photoes = ['static/img/mars2.jpg',
+               'static/img/mars3.jpg']
+    active = 'static/img/mars1.jpg'
+    if request.method == 'GET':
+        return render_template('galery.html', title='Галерея', active=active, photoes=photoes)
+    if request.method == 'POST':
+        photoes.append(f'static/img/{request.form["img"]}')
+        return render_template('galery.html', title='Галерея', active=active, photoes=photoes)
 
 
 @app.route('/carousel', methods=['POST', 'GET'])
@@ -418,7 +419,7 @@ def load_image():
                                         <input type="file" class="form-control-file" id="photo" name="img">
                                     </div>
                                     <br>
-                                    <img src="static/img/{request.form['img']}" 
+                                    <img src="static/img/{request.form['img']}"
                                     width="300" height="300" 
                                     alt="здесь должна была быть картинка, но не нашлась">
                                     <br>

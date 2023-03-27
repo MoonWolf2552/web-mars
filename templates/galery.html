@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 align="center">Пейзажи Марса</h1>
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="true">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{{ active }}" class="d-block w-100"
+                height = "1000"
+                alt="здесь должна была быть картинка, но не нашлась">
+            </div>
+            {% for i in photoes %}
+                <div class="carousel-item">
+                    <img src="{{ i }}" class="d-block w-100"
+                         height="1000"
+                         alt="здесь должна была быть картинка, но не нашлась">
+                </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <div>
+        <form class="img_form" method="post">
+            <div class="form-group">
+                <label for="photo">Загрузите фотографию</label>
+                <input type="file" class="form-control-file" id="photo" name="img">
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
+    </div>
+{% endblock %}
