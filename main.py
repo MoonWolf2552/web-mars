@@ -1,7 +1,8 @@
 from flask import Flask, url_for, request, render_template, redirect, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_restful import Api
 
-from data import db_session, jobs_api
+from data import db_session, jobs_api, users_resource
 from data.departments import Department
 from data.jobs import Jobs
 from data.users import User
@@ -15,6 +16,12 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+api = Api(app)
+
+api.add_resource(users_resource.UsersListResource, '/api/v2/users')
+
+api.add_resource(users_resource.UsersResource, '/api/v2/users/<int:news_id>')
 
 
 @login_manager.user_loader
@@ -369,7 +376,7 @@ def carousel():
                         </html>"""
 
 
-@app.route('/load_image', methods=['POST', 'GET'])
+@app.route('/load_photo', methods=['POST', 'GET'])
 def load_image():
     if request.method == 'GET':
         return f"""<!doctype html>
@@ -386,7 +393,7 @@ def load_image():
                                     <h1 align="center">Загрузка фотографии</h1>
                                     <h2 align="center">для участи в миссии</h2>
                                     <div>
-                                        <form class="img_form" method="post">
+                                        <form class="img_form" form method="post" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <label for="photo">Загрузите фотографию</label>
                                                 <input type="file" class="form-control-file" id="photo" name="img">
@@ -398,7 +405,15 @@ def load_image():
                                   </body>
                                 </html>"""
     if request.method == 'POST':
-        print(request.form['img'])
+        from io import BytesIO
+        a = BytesIO(request.files['img'].read())
+        from base64 import b64encode
+
+        # Получаем байты из объекта BytesIO и кодируем их в base64
+        img_data = a.getvalue()
+        img_base64 = b64encode(img_data).decode('utf-8')
+        # Выводим изображение на HTML страницу
+        html = f'<img src="data:image/jpeg;base64,{img_base64}"/>'
         return f"""<!doctype html>
                         <html lang="en">
                           <head>
@@ -419,9 +434,7 @@ def load_image():
                                         <input type="file" class="form-control-file" id="photo" name="img">
                                     </div>
                                     <br>
-                                    <img src="static/img/{request.form['img']}"
-                                    width="300" height="300" 
-                                    alt="здесь должна была быть картинка, но не нашлась">
+                                    {html}
                                     <br>
                                     <button type="submit" class="btn btn-primary">Отправить</button>
                                  </form>
@@ -641,5 +654,5 @@ if __name__ == '__main__':
     db_session.global_init("db/blogs.db")
     # user_create()
     # jobs_create()
-    # app.register_blueprint(jobs_api.blueprint)
+    app.register_blueprint(jobs_api.blueprint)
     app.run(port=8080, host='127.0.0.1')
