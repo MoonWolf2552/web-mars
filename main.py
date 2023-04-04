@@ -428,7 +428,7 @@ def load_image():
                             <h1 align="center">Загрузка фотографии</h1>
                             <h2 align="center">для участи в миссии</h2>
                             <div>
-                                <form class="img_form" method="post">
+                                <form class="img_form" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="photo">Загрузите фотографию</label>
                                         <input type="file" class="form-control-file" id="photo" name="img">
