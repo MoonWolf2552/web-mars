@@ -324,8 +324,16 @@ def galery():
     if request.method == 'GET':
         return render_template('galery.html', title='Галерея', active=active, photoes=photoes)
     if request.method == 'POST':
-        photoes.append(f'static/img/{request.form["img"]}')
-        return render_template('galery.html', title='Галерея', active=active, photoes=photoes)
+        from io import BytesIO
+        a = BytesIO(request.files['img'].read())
+        from base64 import b64encode
+
+        # Получаем байты из объекта BytesIO и кодируем их в base64
+        img_data = a.getvalue()
+        img_base64 = b64encode(img_data).decode('utf-8')
+        # Выводим изображение на HTML страницу
+        html = img_base64
+        return render_template('galery.html', title='Галерея', active=active, photoes=photoes, html=html)
 
 
 @app.route('/carousel', methods=['POST', 'GET'])
